@@ -13,17 +13,18 @@ def fetch_data():
     return {}
 
 
-def generate_log():
-    log_data = [
-        "User logged in",
-        "User updated profile",
-        "Report exported"
-    ]
+def generate_log(log_data):
+    if not isinstance(log_data, list):
+        raise ValueError("Log data must be a list.")
 
-    post = fetch_data()
+    # Only fetch data if the log list is not empty
+    if log_data:
+        post = fetch_data()
 
-    if post:
-        log_data.append(f"Fetched Post Title: {post.get('title')}")
+        if post:
+            log_data.append(
+                f"Fetched Post Title: {post.get('title')}"
+            )
 
     filename = f"log_{datetime.now().strftime('%Y%m%d')}.txt"
 
@@ -33,6 +34,14 @@ def generate_log():
 
     print(f"Log written to {filename}")
 
+    return filename
+
 
 if __name__ == "__main__":
-    generate_log()
+    log_data = [
+        "User logged in",
+        "User updated profile",
+        "Report exported"
+    ]
+
+    generate_log(log_data)
